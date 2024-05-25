@@ -13,6 +13,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -38,51 +39,27 @@ class MainActivity : ComponentActivity() {
         setContent {
             LiveIntuitionsTheme {
                 val navController = rememberNavController()
+                val auth = remember { FirebaseAuth.getInstance() }
+                val currentUser by rememberUpdatedState(auth.currentUser)
+
+                LaunchedEffect(currentUser) {
+                    if (currentUser != null) {
+                        navController.navigate("movies") {
+                            popUpTo("login") { inclusive = true }
+                        }
+                    }
+                }
                 NavHost(navController, startDestination = "login") {
                     composable("login") { LoginScreen(navController) }
                     composable("register") { RegisterScreen(navController) }
-                    composable("movies") { MovieListScreen() }
+                    composable("movies") { MovieListScreen(navController=navController) }
                 }
             }
         }
 
     }
-    public override fun onStart() {
-        super.onStart()
-        // Check if user is signed in (non-null) and update UI accordingly.
-        val currentUser = auth.currentUser
-        if (currentUser != null) {
-            recreate()
-        }
-    }
-}
-
-//Displays a list of movies fetched from API
-@Composable
-fun MoviesList(modifier: Modifier = Modifier) {
 
 }
 
-//@Composable
-//fun AuthenticationCheck() {
-//    val auth = remember { FirebaseAuth.getInstance() }
-//    var isUserLoggedIn by remember { mutableStateOf(auth.currentUser != null) }
-//
-//    LaunchedEffect(auth) {
-//        val authStateListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
-//            isUserLoggedIn = firebaseAuth.currentUser != null
-//        }
-//        auth.addAuthStateListener(authStateListener)
-//        onDispose {
-//            auth.removeAuthStateListener(authStateListener)
-//        }
-//    }
-//
-//    if (isUserLoggedIn) {
-//        MovieListScreen()
-//    } else {
-//        LoginScreen()
-//    }
-//}
 
 

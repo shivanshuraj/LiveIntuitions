@@ -11,7 +11,7 @@ import retrofit2.http.GET
 data class Movie(val title: String, val overview: String)
 
 interface MovieApi {
-    @GET("popular?api_key=YOUR_API_KEY")
+    @GET("popular?api_key=f86606abb892ae6d204d4a9aa1a6448a")
     suspend fun getPopularMovies(): MovieResponse
 }
 

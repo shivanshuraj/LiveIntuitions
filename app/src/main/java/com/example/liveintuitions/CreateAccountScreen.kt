@@ -22,75 +22,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.google.firebase.auth.FirebaseAuth
 
 private const val TAG = "CreateAccountScreen"
-@Composable
-fun CreateAccountScreen(modifier: Modifier = Modifier) {
-    var firstName by remember { mutableStateOf("") }
-    var lastName by remember { mutableStateOf("") }
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    Column(
-        modifier,
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-
-        OutlinedTextField(
-            value = firstName,
-            maxLines = 1,
-            placeholder = {"First Name"},
-            onValueChange = { firstName = it },
-            label = { "First Name" },
-            modifier = Modifier
-                .padding(bottom = 16.dp)
-                .fillMaxWidth(.9f)
-        )
-        OutlinedTextField(
-            maxLines = 1,
-            value = lastName,
-            onValueChange = { lastName = it },
-            modifier = Modifier
-                .padding(bottom = 16.dp)
-                .fillMaxWidth(.9f)
-        )
-        OutlinedTextField(
-            maxLines = 1,
-            value = email,
-            onValueChange = { email = it },
-            modifier = Modifier
-                .padding(bottom = 16.dp)
-                .fillMaxWidth(.9f)
-        )
-        OutlinedTextField(
-            maxLines = 1,
-            value = password,
-            onValueChange = { password = it },
-            modifier = Modifier
-                .padding(bottom = 16.dp)
-                .fillMaxWidth(.9f)
-        )
-//        Button(onClick = { createNewUser()}, modifier = Modifier.padding(bottom = 16.dp)) {
-//            Text(text = "REGISTER")
-//        }
-        Text(text = "or using other method", modifier = Modifier.padding(bottom = 16.dp))
-        Button(onClick = { /*TODO*/ }, modifier = Modifier.padding(bottom = 16.dp)) {
-            Text(text = "Sign up with Google")
-        }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun createAccPreview() {
-    CreateAccountScreen()
-}
-
 
 @Composable
 fun RegisterScreen(navController: NavController) {
@@ -126,6 +66,8 @@ fun RegisterScreen(navController: NavController) {
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(8.dp))
+        Text(text = "Your password must be atleast 6 characters.", style = TextStyle(fontSize = 8.sp))
+        Spacer(modifier = Modifier.height(8.dp))
         TextField(
             value = confirmPassword,
             onValueChange = { confirmPassword = it },
@@ -136,17 +78,20 @@ fun RegisterScreen(navController: NavController) {
         Spacer(modifier = Modifier.height(8.dp))
         Button(
             onClick = {
-                if (email.isNotEmpty() && password == confirmPassword) {
+                if (email.isNotEmpty() && password == confirmPassword && password.length>=6) {
+                    Toast.makeText(context, "Loading. Please wait", Toast.LENGTH_SHORT)
+                        .show()
                     auth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener { task ->
                             if (task.isSuccessful) {
-                                val user=auth.currentUser
-                                navController.navigate("login")
+                                navController.navigate("movies")
                             } else {
                                 Log.e(TAG, "RegisterScreen: ", task.exception)
                                 Toast.makeText(context, "User registration failed", Toast.LENGTH_SHORT).show()
                             }
                         }
+                }else{
+                    Toast.makeText(context, "Please fill details correctly", Toast.LENGTH_SHORT).show()
                 }
             },
             modifier = Modifier.fillMaxWidth()
