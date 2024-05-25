@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "790916157263",
+    "project_id": "liveintuitions-e4eff",
+    "storage_bucket": "liveintuitions-e4eff.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:790916157263:android:dbe1df9274b4cb32bbbf3a",
+        "android_client_info": {
+          "package_name": "com.example.liveintuitions"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAu8eO8D1bTTwDp2T9L1umaFehnbOe654"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
