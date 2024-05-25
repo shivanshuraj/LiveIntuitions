@@ -1,0 +1,1 @@
+An android app that was given as an assignment by LiveIntuitions company. This app features a create account, log in and a movies screen which shows a list of movies fetched from a public api called TMDB.
